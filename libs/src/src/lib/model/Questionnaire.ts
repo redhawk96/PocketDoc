@@ -1,9 +1,8 @@
 import { QuestionGroup, QuestionInfoGroup } from "./QuestionGroup";
 
 export interface Questionnaire extends QuestionnaireInfo {
-    name: string;
     description?: string | null;
-    questionGroups: QuestionGroup[];
+    questions: QuestionGroup[];
     createdOn: Date;
     updatedOn: Date;
 }

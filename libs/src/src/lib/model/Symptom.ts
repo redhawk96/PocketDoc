@@ -1,6 +1,5 @@
 export interface Symptom {
-    id: string;
-    name: string;
+    type: string;
     description: string;
     photoURL: string | null;
 }

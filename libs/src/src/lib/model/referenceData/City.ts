@@ -3,7 +3,7 @@ import { StateInfo } from "./State";
 
 export class City implements RefData {
     id: string;
-    active: string;
+    disabled: boolean;
     name: string;
     state: StateInfo;
 }

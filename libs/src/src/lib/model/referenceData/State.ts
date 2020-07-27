@@ -7,7 +7,7 @@ export class State implements StateInfo,RefData {
     name: string;
     shortName: string;
     country: Country;
-    active: string;
+    disabled: boolean;
     province: ProvinceInfo;
   }
   

@@ -1,6 +1,7 @@
 
 import { State } from "../referencedata/State";
 import { Country } from "./Country";
+import { RefData } from "./RefData";
 
 export interface Province extends ProvinceInfo {
     id: string;
@@ -10,8 +11,9 @@ export interface Province extends ProvinceInfo {
     country: Country;
 }
 
-export interface ProvinceInfo {
+export class ProvinceInfo implements RefData{
     id: string;
     name: string;
+    disabled: boolean;
     country: Country;
 }
