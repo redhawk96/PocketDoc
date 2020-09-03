@@ -7,3 +7,4 @@ const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG);
 admin.initializeApp(firebaseConfig);
 
 export { P2I } from './P21';
+export { dbGetEpidemicInfo } from './getEpidemicInfo';
