@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { getMinimalEpidemicProfile } from './utils/objectUtils';
+import { getMinimalEpidemicProfile } from './utils/epidemicProfileUtils';
 
 export const dbGetEpidemicInfo = functions.https.onRequest((request, response) => {
   if (request.method === 'GET') {

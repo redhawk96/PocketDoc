@@ -70,5 +70,6 @@ function identifyLocationCriticalness(dbEpidemic: any, userInfo: any): boolean {
       isLocationMarked = true;
     };
   });
-  return isLocationMarked;
+  // return false;
+  return false;
 }

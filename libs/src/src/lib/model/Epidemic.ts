@@ -13,7 +13,8 @@ export interface Epidemic {
     symptoms?: Symptom[] | [];
     precautions?: Precaution[] | [];
     questionnaire: Questionnaire;
-    hotZones?: Address[] | [];
+    // hotZones?: Address[] | [];
+    hotZones? : Object | {};
     totalCases?: number;
     confirmedCases?: number;
     vaccine: 'Available' | 'Not Available' | 'Trials Conducted';
