@@ -163,14 +163,13 @@ export class QuestionnaireFormComponent implements OnInit {
             if (result === true) {
                 this.getGeoLocation();
                 if (this._currentGeoLocation != null) {
-                    this.getConstructedFormData()
-                    // this.epidemicService.submitEpidemicQuestionnaire(this.getConstructedFormData()).subscribe((res: any) => {
-                    // dialogs.alert({
-                    //     title: "Results",
-                    //     message: res,
-                    //     okButtonText: "OK"
-                    // });
-                    // });
+                    this.epidemicService.submitEpidemicQuestionnaire(this.getConstructedFormData()).subscribe((res: any) => {
+                        dialogs.alert({
+                            title: "Results",
+                            message: res.result,
+                            okButtonText: "OK"
+                        });
+                    });
                 }
             } else {
                 dialogs.alert({

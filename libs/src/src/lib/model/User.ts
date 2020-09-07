@@ -13,8 +13,6 @@ export interface User extends UserInfo {
 
 
 export interface UserInfo extends FirebaseUserInfo {
-    id: string;
-    displayName: string;
     firstName: string;
     lastName: string;
     dob: string;

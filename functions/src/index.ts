@@ -8,3 +8,5 @@ admin.initializeApp(firebaseConfig);
 
 export { P2I } from './P21';
 export { dbGetEpidemicInfo } from './getEpidemicInfo';
+export { dbCreateUser } from './createUser';
+export { dbGetMinimalUserInfo } from './getMinimalUser';

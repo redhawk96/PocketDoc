@@ -14,30 +14,34 @@ export const P2I = functions.https.onRequest((request, response) => {
       epidemicDocRef.get().then((doc) => {
         if (doc.exists) {
           const dbEpidemic = doc.data();
-
           const p2iScore = calculateP2IScore(dbEpidemic, userQuestionnaire);
           const locationCriticalness = identifyLocationCriticalness(dbEpidemic, userInfo);
           let isUserCritical: boolean;
           (p2iScore > 70) ? isUserCritical = true : isUserCritical = false;
-
           // Send response after calculating the P2I score
-          response.status(200).send("P2I Score = " + p2iScore + "<br> Probability of virus infection = " + isUserCritical + "<br> Proximity threat = " + locationCriticalness);
+          if (isUserCritical) {
+            response.status(200).send({ status: true, result: "You have a probability of being infected, Please stay indoors and take necessary precautions. Health authority will contact you immediately to verify your health condition" });
+          } else if ((!isUserCritical) && locationCriticalness) {
+            response.status(200).send({ status: true, result: "You do not have a probability of being infected, However, you are located in an area where significant number infected individuals has been found. Please stay indoors and take necessary precautions. Health authority will contact you shortly to verify your health condition" });
+          } else {
+            response.status(200).send({ status: true, result: "You do not have a probability of being infected, Please stay indoors and take necessary precautions" });
+          }
         } else {
           // In case of missing epidemic data
-          response.status(404).send('Request not found');
+          response.status(404).send({ status: false, result: 'Request not found' });
         }
       }).catch(error => {
         // In case of fetching epidemic data
         console.log("Failed to retrieve document. Error => " + error);
-        response.status(500).send('Server error');
+        response.status(500).send({ status: false, result: 'Server error' });
       });
     } else {
       // In case of missing required data
-      response.status(400).send('Bad request');
+      response.status(400).send({ status: false, result: 'Bad request' });
     }
   } else {
     // In case of unauthorized request type
-    response.status(401).send('Unauthorized request');
+    response.status(401).send({ status: false, result: 'Unauthorized request' });
   }
 });
 

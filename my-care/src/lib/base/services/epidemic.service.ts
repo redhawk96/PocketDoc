@@ -15,7 +15,7 @@ export class EpidemicService {
     }
 
     submitEpidemicQuestionnaire(submission: Submission) {
-        return this.http.post("https://us-central1-pocketdoc-a13a2.cloudfunctions.net/P2I", submission, { responseType: 'text' })
+        return this.http.post("https://us-central1-pocketdoc-a13a2.cloudfunctions.net/P2I", submission)
     }
 
     // getItem(id: number): Item {

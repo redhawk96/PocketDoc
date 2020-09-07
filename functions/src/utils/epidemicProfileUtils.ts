@@ -37,7 +37,7 @@ export function getMinimalEpidemicProfile(dbEpidemic: any) {
     const options = [];
     dbQuestionOptions.forEach(dbQuestionOption => {
       const option: any = {};
-      option.id = dbQuestionOption.id;
+      // option.id = dbQuestionOption.id;
       option.option = dbQuestionOption.option;
       options.push(option);
     })
