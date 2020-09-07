@@ -42,6 +42,8 @@
     "@nativescript/angular": "~10.0.0",
     "@nativescript/core": "~7.0.0",
     "@nativescript/theme": "~2.3.0",
+    "nativescript-geolocation": "^5.1.0",
+    "nativescript-ui-dataform": "^7.0.2",
     "nativescript-ui-sidedrawer": "~9.0.0",
     "reflect-metadata": "~0.1.12",
     "rxjs": "^6.6.0",

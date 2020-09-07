@@ -1,0 +1,35 @@
+<ActionBar class="bg-primary">
+    <Label text="REGISTER"></Label>
+</ActionBar>
+<ScrollView>
+    <StackLayout>
+        <RadDataForm #registerUserDataForm [source]="user" commitMode="Manual" style="margin-top: 35px;">
+            <TKEntityProperty tkDataFormProperty name="firstName" displayName="First name" index="0">
+                <TKNonEmptyValidator tkEntityPropertyValidators errorMessage="First name can't be empty."></TKNonEmptyValidator>
+            </TKEntityProperty>
+            <TKEntityProperty tkDataFormProperty name="lastName" displayName="Last name" index="1">
+                <TKNonEmptyValidator tkEntityPropertyValidators errorMessage="Last name can't be empty."></TKNonEmptyValidator>
+            </TKEntityProperty>
+            <TKEntityProperty tkDataFormProperty name="dob" displayName="Date of Birth" index="2">
+                <TKPropertyEditor tkEntityPropertyEditor type="DatePicker"></TKPropertyEditor>
+            </TKEntityProperty>
+            <TKEntityProperty tkDataFormProperty name="nic" displayName="National Identification" index="3">
+                <TKNonEmptyValidator tkEntityPropertyValidators errorMessage="National identification number can't be empty."></TKNonEmptyValidator>
+                <TKMaximumLengthValidator tkEntityPropertyValidators errorMessage="National identification number can be at most 12 characters." length="12"></TKMaximumLengthValidator>
+            </TKEntityProperty>
+            <TKEntityProperty tkDataFormProperty name="city" displayName="City" index="4" [valuesProvider]="cities">
+                <TKPropertyEditor tkEntityPropertyEditor type="Picker"></TKPropertyEditor>
+            </TKEntityProperty>
+            <TKEntityProperty tkDataFormProperty name="phoneNumber" displayName="Phone Number" index="5">
+                <TKPhoneValidator tkEntityPropertyValidators errorMessage="Incorrect phone number"></TKPhoneValidator>
+                <TKPropertyEditor tkEntityPropertyEditor type="Phone"></TKPropertyEditor>
+            </TKEntityProperty>
+        </RadDataForm>
+        <StackLayout orientation="horizontal" style="margin-left: 30px; margin-top: 35px;">
+            <label text="I agree to share my profile for medial purposes" style="vertical-align: middle; font-size: 14px; width: 75%;"></label>
+            <Switch checked="false" (checkedChange)="onProfileCheckedChange($event)" style="width : 20%;" color="red" backgroundColor="#c62828" offBackgroundColor="gray"></Switch>
+          </StackLayout>
+        <Button *ngIf="isProfileFormReady" text="CREATE PROFILE" (tap)="validateProfileCreation()" style="margin-top: 30px; color: white; font-weight: 800;" class="bg-primary"></Button>
+    </StackLayout>
+</ScrollView>
+

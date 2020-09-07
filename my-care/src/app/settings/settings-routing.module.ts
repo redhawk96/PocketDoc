@@ -5,7 +5,10 @@ import { SETTINGS_ROUTE } from "../app-routes";
 import { ProfilePageComponent } from "./pages/profile-page/profile-page.component";
 
 const routes: Routes = [
-    { path: "", component: ProfilePageComponent }
+    {
+        path: '',
+        component: ProfilePageComponent
+    }
 ];
 
 @NgModule({

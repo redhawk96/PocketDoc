@@ -1,1 +1,42 @@
-<Button text="epidemic-overview-page works!" class="btn btn-primary"></Button>
+<ActionBar class="bg-primary">
+    <!--
+    Use the NavigationButton as a side-drawer button in Android
+    because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!--
+    Use the ActionItem for IOS with position set to left. Using the
+    NavigationButton as a side-drawer button in iOS is not possible,
+    because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem>
+    <Label text="Epidemic Profile"></Label>
+</ActionBar>
+
+<BottomNavigation>
+    <TabStrip>
+        <TabStripItem class="navigation__item">
+            <Label text="Epidemic"></Label>
+            <Image src="font://&#xf271;" class="far t-36"></Image>
+        </TabStripItem>
+        <TabStripItem class="navigation__item">
+            <Label text="Questionnaire"></Label>
+            <Image src="font://&#xf059;" class="far t-36"></Image>
+        </TabStripItem>
+    </TabStrip>
+
+    <TabContentItem>
+        <GridLayout class="page__content">
+            <app-epidemic-page></app-epidemic-page>
+		</GridLayout>
+    </TabContentItem>
+
+    <TabContentItem>
+        <GridLayout class="page__content">
+            <app-questionnaire-page></app-questionnaire-page>
+		</GridLayout>
+    </TabContentItem>
+</BottomNavigation>
+

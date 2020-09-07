@@ -1,1 +1,20 @@
-<Button text="questionnaire-form works!" class="btn btn-primary"></Button>
+<!-- <StackLayout>
+  <Progress *ngIf="!isQuestionnaireLoaded" (loaded)="onProgressBarLoaded($event)" (valueChange)="onValueChanged($event)" class="progress"></Progress>
+</StackLayout> -->
+
+<ScrollView style="margin-left: 20px; height: 1300px">
+  <StackLayout>
+    <StackLayout *ngFor="let question of questions; let i = index">
+      <Label [text]="i + 1 +') '+ question.question" style="margin-left: 30px; margin-top: 25px; font-size: 14px;"></Label>
+      <RadDataForm [source]="getSource()" [metadata]="getMetadata(i)">
+      </RadDataForm>
+    </StackLayout>
+
+    <StackLayout orientation="horizontal" *ngIf="isSubmitEnabled" style="margin-left: 30px; margin-top: 35px;">
+      <label text="Address same as provided in the profile" style="vertical-align: middle; font-size: 14px; width: 70%;"></label>
+      <Switch *ngIf="isSubmitEnabled" checked="true" (checkedChange)="onCheckedChange($event)" style="width : 20%;" color="red" backgroundColor="#c62828" offBackgroundColor="gray"></Switch>
+    </StackLayout>
+
+    <Button *ngIf="isSubmitEnabled" text="Submit" style="margin-top: 30px; color: white; font-weight: 800;" class="bg-primary" (tap)="onTap()"></Button>
+  </StackLayout>
+</ScrollView>

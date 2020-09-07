@@ -1,9 +1,9 @@
 <ActionBar class="bg-primary">
-    <Label text="SIGN IN"></Label>
+    <Label text="REGISTER"></Label>
 </ActionBar>
 <ScrollView>
     <StackLayout>
-        <RadDataForm #loginDataForm [source]="loginUser" commitMode="Manual" style="margin-top: 350px;">
+        <RadDataForm #registerAccountDataForm [source]="loginUser" commitMode="Manual" style="margin-top: 350px;">
             <TKEntityProperty tkDataFormProperty name="email" displayName="E-mail" index="0">
                 <TKPropertyEditor tkEntityPropertyEditor type="Email"></TKPropertyEditor>
                 <TKEmailValidator tkEntityPropertyValidators></TKEmailValidator>
@@ -14,11 +14,11 @@
                 </TKMinimumLengthValidator>
             </TKEntityProperty>
         </RadDataForm>
-        <Button text="SIGN IN" (tap)="validateLogin()" style="margin-top: 30px; color: white; font-weight: 800;" class="bg-primary"></Button>
-        <StackLayout orientation="horizontal" style="margin-left: 30px; margin-top: 25px;">
-            <label text="" style="vertical-align: middle; font-size: 14px; width: 50%;"></label>
-            <label text="Don't have an account ? SIGN UP" [nsRouterLink]="['/auth/register']" pageTransition="slide" style="width: 45%;"></label>
+        <StackLayout orientation="horizontal" style="margin-left: 30px; margin-top: 35px;">
+            <label text="I agree with terms" style="vertical-align: middle; font-size: 14px; width: 70%;"></label>
+            <Switch checked="true" (checkedChange)="onAccountCheckedChange($event)" style="width : 20%;" color="red" backgroundColor="#c62828" offBackgroundColor="gray"></Switch>
           </StackLayout>
+        <Button *ngIf="isAccountFormReady" text="CREATE ACCOUNT" (tap)="validateAccountCreation()" style="margin-top: 30px; color: white; font-weight: 800;" class="bg-primary"></Button>
     </StackLayout>
 </ScrollView>
 

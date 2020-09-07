@@ -1,5 +1,5 @@
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-import { NativeScriptCommonModule } from '@nativescript/angular';
+import { NativeScriptCommonModule, NativeScriptHttpClientModule, NativeScriptFormsModule, NativeScriptRouterModule } from '@nativescript/angular';
 import { EpidemicOverviewPageComponent } from './pages/epidemic-overview-page/epidemic-overview-page.component';
 import { SymptomsPageComponent } from './pages/symptoms-page/symptoms-page.component';
 import { PrecautionsPageComponent } from './pages/precautions-page/precautions-page.component';
@@ -14,6 +14,10 @@ import { QuestionnaireFormComponent } from './components/questionnaire-form/ques
 import { FormItemComponent } from './components/form-item/form-item.component';
 import { QuestionnaireResultsModalComponent } from './components/questionnaire-results-modal/questionnaire-results-modal.component';
 import { EpidemicRoutingModule } from './epidemic-routing.module';
+import { EpidemicService } from '../../lib/base/services/epidemic.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NativeScriptUIDataFormModule } from 'nativescript-ui-dataform/angular';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -33,10 +37,18 @@ import { EpidemicRoutingModule } from './epidemic-routing.module';
     ],
     imports: [
         NativeScriptCommonModule,
-        EpidemicRoutingModule
+        EpidemicRoutingModule,
+        NativeScriptHttpClientModule,
+        ReactiveFormsModule,
+        NativeScriptFormsModule,
+        NativeScriptUIDataFormModule,
+        NativeScriptRouterModule
     ],
     schemas: [
         NO_ERRORS_SCHEMA
+    ],
+    providers : [
+        EpidemicService
     ]
 })
 export class EpidemicModule { }

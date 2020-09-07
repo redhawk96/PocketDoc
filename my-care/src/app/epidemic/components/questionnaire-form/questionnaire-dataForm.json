@@ -1,0 +1,15 @@
+{
+  "isReadOnly": false,
+  "commitMode": "Manual",
+  "validationMode": "Immediate",
+  "propertyAnnotations":
+  [
+      {
+          "name": "Select a option",
+          "displayName": "Select a option",
+          "index": 0,
+          "editor": "SegmentedEditor",
+          "valuesProvider": ["O1", "O2"]
+      }
+  ]
+}

@@ -1,7 +1,8 @@
 export const ALERT_ROUTE = "alerts";
 
 export const AUTH_ROUTE = "login";
-export const AUTH_ROUTE_REGISTER = "register";
+export const AUTH_ROUTE_REGISTER_ACCOUNT = "register";
+export const AUTH_ROUTE_REGISTER_PROFILE = "registerProfile";
 export const AUTH_ROUTE_RESET_PASSWORD = "reset";
 
 export const EPIDEMIC_ROUTE = "epidemic";

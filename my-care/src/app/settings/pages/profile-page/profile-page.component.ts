@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { Application } from '@nativescript/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-profile-page',
@@ -10,7 +11,6 @@ import { Application } from '@nativescript/core';
 export class ProfilePageComponent implements OnInit {
 
     constructor() {
-        console.log("setting comp loaded")
     }
 
     ngOnInit(): void {

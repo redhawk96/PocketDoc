@@ -11,11 +11,6 @@ import { QuestionnairePageComponent } from "./pages/questionnaire-page/questionn
 const routes: Routes = [
     {
         path: '',
-        redirectTo: EPIDEMIC_ROUTE,
-        pathMatch: 'full'
-    },
-    {
-        path: EPIDEMIC_ROUTE,
         component: EpidemicOverviewPageComponent
     },
     {

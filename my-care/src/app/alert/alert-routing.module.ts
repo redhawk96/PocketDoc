@@ -7,11 +7,6 @@ import { ALERT_ROUTE } from "../app-routes";
 const routes: Routes = [
     {
         path: '',
-        redirectTo: ALERT_ROUTE,
-        pathMatch : 'full'
-    },
-    {
-        path: ALERT_ROUTE,
         component: AlertOverviewPageComponent
     }
 ];
