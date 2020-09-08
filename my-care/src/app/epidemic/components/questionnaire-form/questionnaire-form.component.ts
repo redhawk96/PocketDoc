@@ -153,7 +153,6 @@ export class QuestionnaireFormComponent implements OnInit {
     }
 
     onTap() {
-
         dialogs.confirm({
             title: 'Share Results',
             message: "Please note that your location and results will be shared with the local health authorities to ensure higher accuracy",

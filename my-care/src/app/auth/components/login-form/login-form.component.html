@@ -3,7 +3,8 @@
 </ActionBar>
 <ScrollView>
     <StackLayout>
-        <RadDataForm #loginDataForm [source]="loginUser" commitMode="Manual" style="margin-top: 350px;">
+        <Image src="res://logodark" style="width: 200px; margin-top: 200px;"></Image>
+        <RadDataForm #loginDataForm [source]="loginUser" commitMode="Manual" style="margin-top: 100px;">
             <TKEntityProperty tkDataFormProperty name="email" displayName="E-mail" index="0">
                 <TKPropertyEditor tkEntityPropertyEditor type="Email"></TKPropertyEditor>
                 <TKEmailValidator tkEntityPropertyValidators></TKEmailValidator>
@@ -14,11 +15,14 @@
                 </TKMinimumLengthValidator>
             </TKEntityProperty>
         </RadDataForm>
-        <Button text="SIGN IN" (tap)="validateLogin()" style="margin-top: 30px; color: white; font-weight: 800;" class="bg-primary"></Button>
-        <StackLayout orientation="horizontal" style="margin-left: 30px; margin-top: 25px;">
+        <Button *ngIf="!loginInProgress" text="SIGN IN" (tap)="validateLogin()" style="margin-top: 30px; color: white; font-weight: 800;" class="bg-primary"></Button>
+        <StackLayout *ngIf="!loginInProgress" orientation="horizontal" style="margin-left: 30px; margin-top: 25px;">
             <label text="" style="vertical-align: middle; font-size: 14px; width: 50%;"></label>
             <label text="Don't have an account ? SIGN UP" [nsRouterLink]="['/auth/register']" pageTransition="slide" style="width: 45%;"></label>
-          </StackLayout>
+        </StackLayout>
+        <StackLayout *ngIf="loginInProgress" style="margin-top: 100px;">
+            <ActivityIndicator busy="true" color="#c62828" width="100" height="50"></ActivityIndicator>
+        </StackLayout>
     </StackLayout>
 </ScrollView>
 

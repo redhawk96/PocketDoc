@@ -5,6 +5,7 @@ import { NativeScriptUISideDrawerModule } from "nativescript-ui-sidedrawer/angul
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { EpidemicService } from "~/lib/base/services/epidemic.service";
+import { UserService } from "~/lib/base/services/user.service";
 
 @NgModule({
     bootstrap: [
@@ -22,7 +23,8 @@ import { EpidemicService } from "~/lib/base/services/epidemic.service";
         NO_ERRORS_SCHEMA
     ],
     providers : [
-        EpidemicService
+        EpidemicService,
+        UserService
     ]
 })
 export class AppModule { }

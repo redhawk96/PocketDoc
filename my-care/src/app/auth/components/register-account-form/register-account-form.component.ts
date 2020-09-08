@@ -7,6 +7,7 @@ import * as dialogs from "@nativescript/core/ui/dialogs";
 import { LoginUser } from '~/lib/base/models/loginUser';
 import { RouterExtensions } from '@nativescript/angular';
 import { AuthService } from '~/lib/base/services/auth.service';
+import { UserService } from '~/lib/base/services/user.service';
 
 @Component({
     selector: 'app-register-account-form',
@@ -21,7 +22,7 @@ export class RegisterAccountFormComponent implements OnInit {
     isAccountFormReady: boolean = true;
     isAccountCreated: boolean = false;
 
-    constructor(cityService: CityService, private authService: AuthService, private router: RouterExtensions) {
+    constructor(cityService: CityService, private authService: AuthService, private userService: UserService, private router: RouterExtensions) {
         this.cities = cityService.getCities()
     }
 
@@ -70,6 +71,7 @@ export class RegisterAccountFormComponent implements OnInit {
     createUserAccount(user: LoginUser) {
         this.authService.signUp(user).subscribe((res: any) => {
             if (res.localId) {
+                this.userService.setSignUpUser(new LoginUser(res.email, null, res.localId))
                 this.router.navigate(['/auth/registerProfile']);
             }
         }, () => {

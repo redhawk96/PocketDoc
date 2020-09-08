@@ -5,8 +5,12 @@ import { NativeScriptRouterModule } from "@nativescript/angular";
 const routes: Routes = [
     {
         path: "",
-        redirectTo: "/auth",
+        redirectTo: "/loading",
         pathMatch: "full"
+    },
+    {
+        path : 'loading',
+        loadChildren: () => import("~/app/core/core.module").then((m) => m.CoreModule)
     },
     {
         path: "auth",

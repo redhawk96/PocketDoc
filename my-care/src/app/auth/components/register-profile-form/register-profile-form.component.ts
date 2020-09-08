@@ -5,7 +5,12 @@ import { CityService } from '~/lib/base/services/city.service';
 import { EventData } from '@nativescript/core/data/observable';
 import { Switch } from '@nativescript/core/ui/switch';
 import * as dialogs from "@nativescript/core/ui/dialogs";
-
+import { AuthService } from '~/lib/base/services/auth.service';
+import { UserService } from '~/lib/base/services/user.service';
+import { LoginUser } from '~/lib/base/models/loginUser';
+import { RouterExtensions } from '@nativescript/angular';
+// tslint:disable: newline-before-return
+// tslint:disable: no-string-literal
 @Component({
     selector: 'app-register-profile-form',
     templateUrl: './register-profile-form.component.html',
@@ -18,8 +23,8 @@ export class RegisterProfileFormComponent implements OnInit {
     cities: string;
     isProfileFormReady: boolean = false;
 
-    constructor(cityService: CityService) {
-        this.cities = cityService.getCities()
+    constructor(private cityService: CityService, private authService: AuthService, private userService: UserService, private router: RouterExtensions) {
+        this.cities = this.cityService.getCities()
     }
 
     ngOnInit() {
@@ -31,57 +36,63 @@ export class RegisterProfileFormComponent implements OnInit {
     }
 
     onProfileCheckedChange(args: EventData) {
-        let sw = args.object as Switch;
+        const sw = args.object as Switch;
         this.isProfileFormReady = sw.checked; // boolean
-        // if (!this.isAddressSame) {
-        //     dialogs.prompt({
-        //         title: "Location Update",
-        //         message: "Please enter you current location",
-        //         okButtonText: "Update",
-        //         cancelable: true,
-        //         inputType: inputType.text,
-        //         capitalizationType: capitalizationType.all
-        //     }).then((result: PromptResult) => {
-        //         this.locatedCity = result.text.toUpperCase();
-        //     });
-        // }
     }
 
-    validateProfileCreation(): boolean {
-        this.profileForm.dataForm.commitAll();
-        if (this.profileForm.dataForm.source['firstName'].toString().length > 3) {
-            if (this.profileForm.dataForm.source['lastName'].toString().length > 3) {
-                if (this.profileForm.dataForm.source['nic'].toString().length > 9 && this.profileForm.dataForm.source['nic'].toString().length < 13) {
-                    if (this.profileForm.dataForm.source['phoneNumber'].toString().length > 11 && this.profileForm.dataForm.source['phoneNumber'].toString().length < 13) {
-                        return true;
-                    } else {
-                        this.setValidatorPopUp('Phone number format is invalid');
-                        return false;
-                    }
-                } else {
-                    this.setValidatorPopUp('National identification number format is invalid');
-                    return false;
-                }
-            } else {
-                this.setValidatorPopUp('Last name is required');
-                return false;
-            }
-        } else {
-            this.setValidatorPopUp('First name is required');
-            return false;
-        }
-    }
-
-    setValidatorPopUp(text: string) {
+    displayPopUpDialog(dTitle: string, text: string) {
         dialogs.alert({
-            title: 'Required Field',
+            title: dTitle,
             message: text,
             okButtonText: "OK"
         })
     }
 
-    public onTap() {
+    validateProfileCreation(firstName: string, lastName: string, nic: string, phoneNumber: string): boolean {
         this.profileForm.dataForm.commitAll();
-        console.log(this.profileForm.dataForm.source)
+        if (firstName.length > 3) {
+            if (lastName.length > 3) {
+                if (nic.length > 9 && nic.length < 13) {
+                    if (phoneNumber.length > 11 && phoneNumber.length < 13) {
+                        return true;
+                    } else {
+                        this.displayPopUpDialog('Missing Required Field', 'Please make sure entered phone number format is of valid format');
+                        return false;
+                    }
+                } else {
+                    this.displayPopUpDialog('Missing Required Field', 'Please make sure entered national identification number format is of valid format');
+                    return false;
+                }
+            } else {
+                this.displayPopUpDialog('Missing Required Field', 'Last name is a required field, please make sure you enter last name');
+                return false;
+            }
+        } else {
+            this.displayPopUpDialog('Missing Required Field', 'First name is a required field, please make sure you enter first name');
+            return false;
+        }
+    }
+
+    setUpProfile() {
+        const firstName = this.profileForm.dataForm.source['firstName'];
+        const lastName = this.profileForm.dataForm.source['lastName'];
+        const dob = this.profileForm.dataForm.source['dob'];
+        const nic = this.profileForm.dataForm.source['nic'];
+        const city = this.profileForm.dataForm.source['city'];
+        const phoneNumber = this.profileForm.dataForm.source['phoneNumber'];
+
+        if (this.validateProfileCreation(firstName, lastName, nic, phoneNumber)) {
+            const signUpUser: LoginUser = this.userService.getSignUpUser()
+            const user = new MinimalUser(firstName, lastName, dob, nic, city, phoneNumber, signUpUser.email, signUpUser.uid)
+            this.authService.setUpProfile(user).subscribe((res: any) => {
+                this.userService.setDbUser(user);
+                this.displayPopUpDialog('Profile Creation', res.result);
+                setTimeout(() => {
+                    if (res.status === true) {
+                        this.router.navigate(['/epidemic']);
+                    }
+                }, 1000)
+            })
+        }
     }
 }

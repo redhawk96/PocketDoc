@@ -1,1 +1,4 @@
-<Button text="loading-page works!" class="btn btn-primary"></Button>
+<StackLayout style="padding-top: 750px;" class="bg-primary">
+    <Label text="LOADING POCKETDOC..." style="text-align: center; font-size: 12px;"></Label>
+  <Progress *ngIf="!isQuestionnaireLoaded" (loaded)="onProgressBarLoaded($event)" (valueChange)="onValueChanged($event)" class="progress"></Progress>
+</StackLayout>

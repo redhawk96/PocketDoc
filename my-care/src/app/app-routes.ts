@@ -1,5 +1,7 @@
 export const ALERT_ROUTE = "alerts";
 
+export const CORE_ROUTE = "loading";
+
 export const AUTH_ROUTE = "login";
 export const AUTH_ROUTE_REGISTER_ACCOUNT = "register";
 export const AUTH_ROUTE_REGISTER_PROFILE = "registerProfile";

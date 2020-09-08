@@ -3,7 +3,8 @@
 </ActionBar>
 <ScrollView>
     <StackLayout>
-        <RadDataForm #registerAccountDataForm [source]="loginUser" commitMode="Manual" style="margin-top: 350px;">
+        <Image src="res://logodark" style="width: 200px; margin-top: 200px;"></Image>
+        <RadDataForm #registerAccountDataForm [source]="loginUser" commitMode="Manual" style="margin-top: 100px;">
             <TKEntityProperty tkDataFormProperty name="email" displayName="E-mail" index="0">
                 <TKPropertyEditor tkEntityPropertyEditor type="Email"></TKPropertyEditor>
                 <TKEmailValidator tkEntityPropertyValidators></TKEmailValidator>
