@@ -53,12 +53,13 @@ export class LoginFormComponent implements OnInit {
         }
     }
 
-    signinUser(user: LoginUser) {
+    signinUser() {
         this.loginForm.dataForm.commitAll();
         const email = this.loginForm.dataForm.source['email'];
         const password = this.loginForm.dataForm.source['password'];
+        const user : LoginUser = new LoginUser(email, password);
 
-        if (this.validateCredentials(new LoginUser(email, password))) {
+        if (this.validateCredentials(user)) {
             this.loginInProgress = true;
 
             this.authService.signIn(user).subscribe((res: any) => {

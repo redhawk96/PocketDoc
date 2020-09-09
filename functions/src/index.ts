@@ -10,3 +10,4 @@ export { P2I } from './P21';
 export { dbGetEpidemicInfo } from './getEpidemicInfo';
 export { dbCreateUser } from './createUser';
 export { dbGetMinimalUserInfo } from './getMinimalUser';
+export { getUserTurnUpRate } from './getTurnUpRate';

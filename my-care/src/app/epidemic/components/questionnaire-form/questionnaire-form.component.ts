@@ -9,6 +9,7 @@ import * as geoLocation from "nativescript-geolocation";
 import { capitalizationType, inputType, PromptResult } from '@nativescript/core/ui/dialogs';
 import { Button } from '@nativescript/core';
 import { UserService } from '~/lib/base/services/user.service';
+import { RouterExtensions } from '@nativescript/angular';
 
 // tslint:disable: newline-before-return
 @Component({
@@ -17,15 +18,17 @@ import { UserService } from '~/lib/base/services/user.service';
     styleUrls: ['./questionnaire-form.component.css']
 })
 export class QuestionnaireFormComponent implements OnInit {
+    // @ViewChildren(Button) questionnaireButtons: QueryList<Button>;
     isSubmitEnabled: boolean = false;
     private epidemicProfile: EpidemicProfile;
     private _currentGeoLocation: any = null;
     private _questions: any = [];
     private selectedOptionObj: any = {};
     isAddressSame: boolean = true;
+    isSubmissionInProgress: boolean = false;
     private locatedCity: string = null;
 
-    constructor(private epidemicService: EpidemicService, private userService: UserService) {
+    constructor(private epidemicService: EpidemicService, private userService: UserService, private router: RouterExtensions) {
         this.epidemicService.getEpidemicProfile().subscribe((eProfile: EpidemicProfile) => {
             this.epidemicProfile = eProfile;
             this._questions = eProfile.questionnaire.questions;
@@ -39,6 +42,7 @@ export class QuestionnaireFormComponent implements OnInit {
     ngOnInit(): void {
         setTimeout(() => {
             this.isSubmitEnabled = true;
+            this.getGeoLocation();
         }, 5000);
     }
 
@@ -80,12 +84,11 @@ export class QuestionnaireFormComponent implements OnInit {
                 id: key,
                 option: this.selectedOptionObj[key]
             })
-        })
+        });
 
         // Getting location
         if (this.locatedCity == null) {
-            console.log(this.userService.getDbUser())
-            this.locatedCity = this.userService.getDbUser().city
+            this.locatedCity = this.userService.getDbUser().city.toUpperCase()
         }
 
         // Constructing the submission to JSON object
@@ -130,6 +133,7 @@ export class QuestionnaireFormComponent implements OnInit {
     }
 
     onSubmitQuestionnaire() {
+        this.isSubmissionInProgress = true;
         if (Object.keys(this.selectedOptionObj).length === this._questions.length) {
             dialogs.confirm({
                 title: 'Share Results',
@@ -138,7 +142,6 @@ export class QuestionnaireFormComponent implements OnInit {
                 cancelButtonText: "No"
             }).then((result: boolean) => {
                 if (result === true) {
-                    this.getGeoLocation();
                     if (this._currentGeoLocation != null) {
                         this.epidemicService.submitEpidemicQuestionnaire(this.getConstructedFormData()).subscribe((res: any) => {
                             dialogs.alert({
@@ -148,12 +151,14 @@ export class QuestionnaireFormComponent implements OnInit {
                             });
                         });
                     }
+                    this.isSubmissionInProgress = false;
                 } else {
                     dialogs.alert({
                         title: 'Required',
                         message: "Questionnaire not shared. Please note that location and results sharing is required to determine accuracy",
                         okButtonText: "OK"
-                    })
+                    });
+                    this.isSubmissionInProgress = false;
                 }
             });
         } else {
@@ -161,8 +166,15 @@ export class QuestionnaireFormComponent implements OnInit {
                 title: 'Required',
                 message: "Please make sure you selected answers for the entire questionnaire as all questions must be answered to determine accuracy",
                 okButtonText: "OK"
-            })
+            });
+            this.isSubmissionInProgress = false;
         }
+    }
+
+    onOptionSelect(args, questionIndex: number, optionIndex: number) {
+        const button = args.object as Button;
+        button.className = "btn-selected";
+        this.selectedOptionObj["Q" + (questionIndex + 1)] = 'O' + (optionIndex + 1);
     }
 
     // onProgressBarLoaded(args) {
@@ -183,11 +195,9 @@ export class QuestionnaireFormComponent implements OnInit {
     //     }
     // }
 
-
-    onOptionSelect(args, questionIndex: number, optionIndex: number) {
-        const button = args.object as Button;
-        button.className = "bg-primary";
-        this.selectedOptionObj["Q" + (questionIndex + 1)] = 'O' + (optionIndex + 1);
-    }
-
+    // resetSelectedOptions() {
+    //     this.questionnaireButtons.toArray().forEach((btn: Button) => {
+    //         button.className = "btn-default";
+    //     })
+    // }
 }

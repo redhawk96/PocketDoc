@@ -1,16 +1,13 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-
 export const P2I = functions.https.onRequest((request, response) => {
   if (request.method === 'POST') {
     const reqData = request.body;
     if (reqData.epidemic && reqData.questionnaire && reqData.user) {
       const userQuestionnaire = reqData.questionnaire;
       const userInfo = reqData.user;
-
       const db = admin.firestore();
       const epidemicDocRef = db.collection('epidemics').doc(reqData.epidemic.id);
-
       epidemicDocRef.get().then((doc) => {
         if (doc.exists) {
           const dbEpidemic = doc.data();
@@ -21,6 +18,8 @@ export const P2I = functions.https.onRequest((request, response) => {
           // Send response after calculating the P2I score
           if (isUserCritical) {
             response.status(200).send({ status: true, result: "You have a probability of being infected, Please stay indoors and take necessary precautions. Health authority will contact you immediately to verify your health condition" });
+          } else if (isUserCritical && locationCriticalness) {
+            response.status(200).send({ status: true, result: "You have a probability of being infected, and you are located in an area where significant number infected individuals has been found. Please stay indoors and take necessary precautions. Health authority will contact you immediately to verify your health condition" });
           } else if ((!isUserCritical) && locationCriticalness) {
             response.status(200).send({ status: true, result: "You do not have a probability of being infected, However, you are located in an area where significant number infected individuals has been found. Please stay indoors and take necessary precautions. Health authority will contact you shortly to verify your health condition" });
           } else {
@@ -45,7 +44,6 @@ export const P2I = functions.https.onRequest((request, response) => {
   }
 });
 
-
 function calculateP2IScore(dbEpidemic: any, userQuestionnaire: any) {
   const dbQuestionnaire: [] = dbEpidemic.questionnaire.questions;
   let p2iScore = 0;
@@ -65,7 +63,6 @@ function calculateP2IScore(dbEpidemic: any, userQuestionnaire: any) {
   });
   return p2iScore;
 };
-
 function identifyLocationCriticalness(dbEpidemic: any, userInfo: any): boolean {
   const dbHotZones: [] = dbEpidemic.hotZones;
   let isLocationMarked: boolean = false;
@@ -74,6 +71,5 @@ function identifyLocationCriticalness(dbEpidemic: any, userInfo: any): boolean {
       isLocationMarked = true;
     };
   });
-  // return false;
-  return false;
+  return isLocationMarked;
 }
