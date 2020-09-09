@@ -12,6 +12,7 @@ import { CityService } from '~/lib/base/services/city.service';
 import { RegisterProfileFormComponent } from './components/register-profile-form/register-profile-form.component';
 import { AuthService } from '~/lib/base/services/auth.service';
 import { UserService } from '~/lib/base/services/user.service';
+import { ModuleWithProviders } from '@angular/compiler/src/core';
 
 @NgModule({
     declarations: [
@@ -33,10 +34,16 @@ import { UserService } from '~/lib/base/services/user.service';
     schemas: [
         NO_ERRORS_SCHEMA
     ],
-    providers : [
+    providers: [
         CityService,
-        AuthService,
-        UserService
+        AuthService
     ]
 })
-export class AuthModule { }
+export class AuthModule {
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: AuthModule,
+            providers: [UserService]
+        };
+    }
+}

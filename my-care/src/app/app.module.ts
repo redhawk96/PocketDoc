@@ -6,6 +6,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { EpidemicService } from "~/lib/base/services/epidemic.service";
 import { UserService } from "~/lib/base/services/user.service";
+import { AuthModule } from "./auth/auth.module";
 
 @NgModule({
     bootstrap: [
@@ -14,17 +15,14 @@ import { UserService } from "~/lib/base/services/user.service";
     imports: [
         AppRoutingModule,
         NativeScriptModule,
-        NativeScriptUISideDrawerModule
+        NativeScriptUISideDrawerModule,
+        AuthModule.forRoot()
     ],
     declarations: [
         AppComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA
-    ],
-    providers : [
-        EpidemicService,
-        UserService
     ]
 })
 export class AppModule { }

@@ -8,7 +8,10 @@ import { LoginUser } from '~/lib/base/models/loginUser';
 import { RouterExtensions } from '@nativescript/angular';
 import { AuthService } from '~/lib/base/services/auth.service';
 import { UserService } from '~/lib/base/services/user.service';
-
+import { validateEmail } from '~/lib/base/utils/loginUtils';
+// tslint:disable: no-shadowed-variable
+// tslint:disable: no-string-literal
+// tslint:disable: newline-before-return
 @Component({
     selector: 'app-register-account-form',
     templateUrl: './register-account-form.component.html',
@@ -20,7 +23,7 @@ export class RegisterAccountFormComponent implements OnInit {
     private _loginUser: LoginUser;
     cities: string;
     isAccountFormReady: boolean = true;
-    isAccountCreated: boolean = false;
+    creationInProgress: boolean = false;
 
     constructor(cityService: CityService, private authService: AuthService, private userService: UserService, private router: RouterExtensions) {
         this.cities = cityService.getCities()
@@ -35,51 +38,53 @@ export class RegisterAccountFormComponent implements OnInit {
     }
 
     onAccountCheckedChange(args: EventData) {
-        let sw = args.object as Switch;
+        const sw = args.object as Switch;
         this.isAccountFormReady = sw.checked; // boolean
     }
 
-    validateAccountCreation() {
-        this.accountForm.dataForm.commitAll();
-        if (this.ValidateEmail(this.accountForm.dataForm.source['email'].toString())) {
-            if (this.accountForm.dataForm.source['password'].toString().length > 5) {
-                this.createUserAccount(new LoginUser(this.accountForm.dataForm.source['email'], this.accountForm.dataForm.source['password']));
-            } else {
-                this.setValidatorPopUp('Password is invalid');
-            }
-        } else {
-            this.setValidatorPopUp('Email is invalid');
-        }
-    }
-
-    ValidateEmail(email) {
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-            return true;
-        } else {
-            return false
-        }
-    }
-
-    setValidatorPopUp(text: string) {
+    displayPopUpDialog(dTitle: string, text: string) {
         dialogs.alert({
-            title: 'Required Field',
+            title: dTitle,
             message: text,
             okButtonText: "OK"
         })
     }
 
-    createUserAccount(user: LoginUser) {
-        this.authService.signUp(user).subscribe((res: any) => {
-            if (res.localId) {
-                this.userService.setSignUpUser(new LoginUser(res.email, null, res.localId))
-                this.router.navigate(['/auth/registerProfile']);
+    validateCredentials(user: LoginUser) {
+        if (validateEmail(user.email)) {
+            if (user.password.length > 5) {
+                return true;
+            } else {
+                this.displayPopUpDialog('Missing Required Field', 'Please make sure entered password is of valid format. Password requires minimun of 6 characters');
+                return false;
             }
-        }, () => {
-            dialogs.alert({
-                title: 'Existing Email',
-                message: 'Account already exists with the provided email',
-                okButtonText: "OK"
-            })
-        });
+        } else {
+            this.displayPopUpDialog('Missing Required Field', 'Email is a required field, please make sure you enter email');
+            return false;
+        }
+    }
+
+    signUpUser() {
+        this.accountForm.dataForm.commitAll();
+        const email = this.accountForm.dataForm.source['email'];
+        const password = this.accountForm.dataForm.source['password'];
+        const user: LoginUser = new LoginUser(email, password);
+
+        if (this.validateCredentials(user)) {
+            this.creationInProgress = true;
+
+            this.authService.signUp(user).subscribe((res: any) => {
+                if (res.localId) {
+                    this.userService.setSignUpUser(new LoginUser(res.email, null, res.localId))
+                    this.displayPopUpDialog('Account Creation', 'Congratulations your account has been created. To complete registration please setup up you medical profile');
+                    setTimeout(() => {
+                        this.router.navigate(['/auth/registerProfile']);
+                    }, 800)
+                }
+            }, () => {
+                this.creationInProgress = false;
+                this.displayPopUpDialog('Existing Email', 'Account already exists with the provided email. Please press back key to return to login');
+            });
+        }
     }
 }

@@ -1,9 +1,16 @@
+<!-- <StackLayout>
+  <Progress *ngIf="!isQuestionnaireLoaded" (loaded)="onProgressBarLoaded($event)" (valueChange)="onValueChanged($event)" class="progress"></Progress>
+</StackLayout> -->
+
 <ScrollView style="margin-left: 20px; height: 1300px">
   <StackLayout>
     <StackLayout *ngFor="let question of questions; let i = index">
       <Label [text]="i + 1 +') '+ question.question" style="margin-left: 30px; margin-top: 25px; font-size: 14px;"></Label>
-      <RadDataForm [source]="getSource()" [metadata]="getMetadata(i)">
-      </RadDataForm>
+      <ScrollView orientation="horizontal" style="height: 150px;">
+        <GridLayout class="m-15" columns="auto auto auto auto">
+          <Button [col]="(o+1)" *ngFor="let option of getformattedOptionArray(i); let o = index" [text]="option"  (tap)="onOptionSelect($event, i, o)" style="padding-left: 40px; padding-right: 40px;"></Button>
+        </GridLayout>
+    </ScrollView>
     </StackLayout>
 
     <StackLayout orientation="horizontal" *ngIf="isSubmitEnabled" style="margin-left: 30px; margin-top: 35px;">
@@ -11,6 +18,6 @@
       <Switch *ngIf="isSubmitEnabled" checked="true" (checkedChange)="onCheckedChange($event)" style="width : 20%;" color="red" backgroundColor="#c62828" offBackgroundColor="gray"></Switch>
     </StackLayout>
 
-    <Button *ngIf="isSubmitEnabled" text="Submit" style="margin-top: 30px; color: white; font-weight: 800;" class="bg-primary" (tap)="onTap()"></Button>
+    <Button *ngIf="isSubmitEnabled" text="Submit" style="margin-top: 30px; color: white; font-weight: 800;" class="bg-primary" (tap)="onSubmitQuestionnaire()"></Button>
   </StackLayout>
 </ScrollView>

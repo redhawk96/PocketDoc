@@ -1,34 +1,35 @@
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EpidemicService } from '~/lib/base/services/epidemic.service';
 import { EpidemicProfile } from '~/lib/base/models/EpidemicProfile';
-import { RadDataFormComponent } from 'nativescript-ui-dataform/angular';
 import { EventData } from '@nativescript/core/data/observable';
 import { Switch } from '@nativescript/core/ui/switch';
 import * as dialogs from "@nativescript/core/ui/dialogs";
 import * as geoLocation from "nativescript-geolocation";
-// tslint:disable-next-line: no-duplicate-imports
+// tslint:disable: no-duplicate-imports
 import { capitalizationType, inputType, PromptResult } from '@nativescript/core/ui/dialogs';
-const questionnaireDataFormMetadata = require('./questionnaire-dataForm.json');
+import { Button } from '@nativescript/core';
+import { UserService } from '~/lib/base/services/user.service';
 
+// tslint:disable: newline-before-return
 @Component({
     selector: 'app-questionnaire-form',
     templateUrl: './questionnaire-form.component.html',
     styleUrls: ['./questionnaire-form.component.css']
 })
 export class QuestionnaireFormComponent implements OnInit {
-    @ViewChildren(RadDataFormComponent) dataformRef: QueryList<RadDataFormComponent>
     isSubmitEnabled: boolean = false;
+    private epidemicProfile: EpidemicProfile;
     private _currentGeoLocation: any = null;
-    private _questionnaireMetadata;
     private _questions: any = [];
+    private selectedOptionObj: any = {};
     isAddressSame: boolean = true;
-    private locatedCity: string;
+    private locatedCity: string = null;
 
-    constructor(private epidemicService: EpidemicService) {
+    constructor(private epidemicService: EpidemicService, private userService: UserService) {
         this.epidemicService.getEpidemicProfile().subscribe((eProfile: EpidemicProfile) => {
+            this.epidemicProfile = eProfile;
             this._questions = eProfile.questionnaire.questions;
         });
-        this._questionnaireMetadata = JSON.parse(JSON.stringify(questionnaireDataFormMetadata));
     }
 
     get questions() {
@@ -41,38 +42,6 @@ export class QuestionnaireFormComponent implements OnInit {
         }, 5000);
     }
 
-    getSource() {
-        const optionObj = {
-            "Select a option": ""
-        }
-        return optionObj
-    }
-
-    getformattedOptionArray(loopIndex: number) {
-        const formattedOptionArray: any = [];
-        this.questions[loopIndex].options.forEach((opt: any) => {
-            formattedOptionArray.push(opt.option);
-        });
-        return formattedOptionArray;
-    }
-
-    getMetadata(loopIndex: number) {
-        return this.getRefactoredMetaData(this.getformattedOptionArray(loopIndex));
-    }
-
-    private getRefactoredMetaData(values: any) {
-        this._questionnaireMetadata.propertyAnnotations = [
-            {
-                "name": "Select a option",
-                "displayName": "Select a option",
-                "index": 0,
-                "editor": "SegmentedEditor",
-                "valuesProvider": values
-            }
-        ];
-        return this._questionnaireMetadata;
-    }
-
     private getGeoLocation(): void {
         geoLocation.isEnabled().then(enabled => {
             if (!enabled) {
@@ -81,6 +50,14 @@ export class QuestionnaireFormComponent implements OnInit {
                 this.locateGeoPoints();
             }
         });
+    }
+
+    getformattedOptionArray(loopIndex: number) {
+        const formattedOptionArray: any = [];
+        this.questions[loopIndex].options.forEach((opt: any) => {
+            formattedOptionArray.push(opt.option);
+        });
+        return formattedOptionArray;
     }
 
     private locateGeoPoints(): void {
@@ -97,30 +74,30 @@ export class QuestionnaireFormComponent implements OnInit {
 
     private getConstructedFormData() {
         // Getting the selected options
-        let loopIndex: number = 0;
-        const submittedQuestions = [];
-        this.dataformRef.toArray().forEach(form => {
-            form.dataForm.commitAll();
-            const selectedOptions: any = {};
-            selectedOptions.id = "Q" + (loopIndex + 1);
-            selectedOptions.option = "O" + (this.getformattedOptionArray(loopIndex).indexOf(form.dataForm.source["Select a option"]) + 1);
-            submittedQuestions.push(selectedOptions)
-            loopIndex++;
-        });
+        const selectOptionArray = [];
+        Object.keys(this.selectedOptionObj).forEach(key => {
+            selectOptionArray.push({
+                id: key,
+                option: this.selectedOptionObj[key]
+            })
+        })
 
         // Getting location
-        // console.log(selectedCity)
+        if (this.locatedCity == null) {
+            console.log(this.userService.getDbUser())
+            this.locatedCity = this.userService.getDbUser().city
+        }
 
         // Constructing the submission to JSON object
         const submissionData: any = {
             questionnaire: {
-                questions: submittedQuestions
+                questions: selectOptionArray
             },
             epidemic: {
-                id: "CORONAVIRUS"
+                id: this.epidemicProfile.id
             },
             user: {
-                email: "uditha1003@gmail.com",
+                email: this.userService.getDbUser().email,
                 addressInfo: {
                     city: {
                         id: this.locatedCity
@@ -131,12 +108,12 @@ export class QuestionnaireFormComponent implements OnInit {
                     }
                 }
             }
-        };
+        }
         return submissionData
     }
 
     onCheckedChange(args: EventData) {
-        let sw = args.object as Switch;
+        const sw = args.object as Switch;
         this.isAddressSame = sw.checked; // boolean
         if (!this.isAddressSame) {
             dialogs.prompt({
@@ -152,32 +129,40 @@ export class QuestionnaireFormComponent implements OnInit {
         }
     }
 
-    onTap() {
-        dialogs.confirm({
-            title: 'Share Results',
-            message: "Please note that your location and results will be shared with the local health authorities to ensure higher accuracy",
-            okButtonText: "Yes",
-            cancelButtonText: "No"
-        }).then((result: boolean) => {
-            if (result === true) {
-                this.getGeoLocation();
-                if (this._currentGeoLocation != null) {
-                    this.epidemicService.submitEpidemicQuestionnaire(this.getConstructedFormData()).subscribe((res: any) => {
-                        dialogs.alert({
-                            title: "Results",
-                            message: res.result,
-                            okButtonText: "OK"
+    onSubmitQuestionnaire() {
+        if (Object.keys(this.selectedOptionObj).length === this._questions.length) {
+            dialogs.confirm({
+                title: 'Share Results',
+                message: "Please note that your location and results will be shared with the local health authorities to ensure higher accuracy",
+                okButtonText: "Yes",
+                cancelButtonText: "No"
+            }).then((result: boolean) => {
+                if (result === true) {
+                    this.getGeoLocation();
+                    if (this._currentGeoLocation != null) {
+                        this.epidemicService.submitEpidemicQuestionnaire(this.getConstructedFormData()).subscribe((res: any) => {
+                            dialogs.alert({
+                                title: "Results",
+                                message: res.result,
+                                okButtonText: "OK"
+                            });
                         });
-                    });
+                    }
+                } else {
+                    dialogs.alert({
+                        title: 'Required',
+                        message: "Questionnaire not shared. Please note that location and results sharing is required to determine accuracy",
+                        okButtonText: "OK"
+                    })
                 }
-            } else {
-                dialogs.alert({
-                    title: 'Required',
-                    message: "Questionnaire not shared. Please note that location and results sharing is required to determine accuracy",
-                    okButtonText: "OK"
-                })
-            }
-        });
+            });
+        } else {
+            dialogs.alert({
+                title: 'Required',
+                message: "Please make sure you selected answers for the entire questionnaire as all questions must be answered to determine accuracy",
+                okButtonText: "OK"
+            })
+        }
     }
 
     // onProgressBarLoaded(args) {
@@ -197,4 +182,12 @@ export class QuestionnaireFormComponent implements OnInit {
     //         }, 2000)
     //     }
     // }
+
+
+    onOptionSelect(args, questionIndex: number, optionIndex: number) {
+        const button = args.object as Button;
+        button.className = "bg-primary";
+        this.selectedOptionObj["Q" + (questionIndex + 1)] = 'O' + (optionIndex + 1);
+    }
+
 }

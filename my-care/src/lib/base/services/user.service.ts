@@ -2,9 +2,7 @@ import { Injectable } from "@angular/core";
 import { MinimalUser } from "../models/MinimalUser";
 import { LoginUser } from "../models/loginUser";
 
-@Injectable({
-    providedIn: "root"
-})
+@Injectable()
 
 export class UserService {
 

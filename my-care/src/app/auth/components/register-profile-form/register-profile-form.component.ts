@@ -49,18 +49,17 @@ export class RegisterProfileFormComponent implements OnInit {
     }
 
     validateProfileCreation(firstName: string, lastName: string, nic: string, phoneNumber: string): boolean {
-        this.profileForm.dataForm.commitAll();
         if (firstName.length > 3) {
             if (lastName.length > 3) {
                 if (nic.length > 9 && nic.length < 13) {
                     if (phoneNumber.length > 11 && phoneNumber.length < 13) {
                         return true;
                     } else {
-                        this.displayPopUpDialog('Missing Required Field', 'Please make sure entered phone number format is of valid format');
+                        this.displayPopUpDialog('Missing Required Field', 'Please make sure entered phone number is of valid format');
                         return false;
                     }
                 } else {
-                    this.displayPopUpDialog('Missing Required Field', 'Please make sure entered national identification number format is of valid format');
+                    this.displayPopUpDialog('Missing Required Field', 'Please make sure entered national identification number is of valid format');
                     return false;
                 }
             } else {
@@ -74,6 +73,7 @@ export class RegisterProfileFormComponent implements OnInit {
     }
 
     setUpProfile() {
+        this.profileForm.dataForm.commitAll();
         const firstName = this.profileForm.dataForm.source['firstName'];
         const lastName = this.profileForm.dataForm.source['lastName'];
         const dob = this.profileForm.dataForm.source['dob'];
@@ -84,9 +84,12 @@ export class RegisterProfileFormComponent implements OnInit {
         if (this.validateProfileCreation(firstName, lastName, nic, phoneNumber)) {
             const signUpUser: LoginUser = this.userService.getSignUpUser()
             const user = new MinimalUser(firstName, lastName, dob, nic, city, phoneNumber, signUpUser.email, signUpUser.uid)
+
             this.authService.setUpProfile(user).subscribe((res: any) => {
+
                 this.userService.setDbUser(user);
                 this.displayPopUpDialog('Profile Creation', res.result);
+
                 setTimeout(() => {
                     if (res.status === true) {
                         this.router.navigate(['/epidemic']);

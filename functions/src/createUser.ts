@@ -8,7 +8,7 @@ export const dbCreateUser = functions.https.onRequest((request, response) => {
     if (validateFields(reqData)) {
       const db = admin.firestore();
       db.collection('users').doc(reqData.email).set(extractUserInfo(reqData)).then(() => {
-        response.status(200).send({ status: true, result: 'Congratulations, your medical profile has been created successfully' });
+        response.status(200).send({ status: true, result: 'Your medical profile has been created, We are excited to have you here with us' });
       }).catch(error => {
         console.log("Failed to create document. Error => " + error);
         response.status(500).send({ status: false, result: error });

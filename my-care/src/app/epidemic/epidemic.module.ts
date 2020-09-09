@@ -18,6 +18,7 @@ import { EpidemicService } from '../../lib/base/services/epidemic.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NativeScriptUIDataFormModule } from 'nativescript-ui-dataform/angular';
 import { HttpClientModule } from '@angular/common/http';
+import { UserService } from '~/lib/base/services/user.service';
 
 @NgModule({
     declarations: [

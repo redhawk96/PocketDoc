@@ -16,13 +16,10 @@ export class AppComponent implements OnInit {
     userName: string;
     email: string;
 
-    constructor(private router: Router, private routerExtensions: RouterExtensions, private userService: UserService) {
+    constructor(private router: Router, private routerExtensions: RouterExtensions) {
     }
 
     ngOnInit(): void {
-        const dbUser = this.userService.getDbUser();
-        this.userName = dbUser.firstName + " " + dbUser.lastName;
-        this.email = dbUser.email;
         this._activatedUrl = "/epidemic";
         this._sideDrawerTransition = new SlideInOnTopTransition();
 
