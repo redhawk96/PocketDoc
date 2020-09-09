@@ -8,6 +8,7 @@ export interface EpidemicProfile {
     id: string;
     name: string;
     description: string;
+    photoURL : string;
     symptoms?: Symptom[] | [];
     precautions?: Precaution[] | [];
     questionnaire: MinimalQuestionnaire;

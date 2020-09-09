@@ -2,6 +2,7 @@ export function getMinimalEpidemicProfile(dbEpidemic: any) {
     const epidemicProfile = {
       id: dbEpidemic.id,
       name: dbEpidemic.name,
+      photoURL : dbEpidemic.photoURL,
       description: dbEpidemic.description,
       symptoms: dbEpidemic.symptoms,
       precautions: dbEpidemic.precautions,
@@ -11,7 +12,7 @@ export function getMinimalEpidemicProfile(dbEpidemic: any) {
     }
     return epidemicProfile;
   }
-  
+
   function getMinimalQuestionnaire(dbQuestionnaire: any) {
     const questionnaire: any = {};
     questionnaire.id = dbQuestionnaire.id;
@@ -19,7 +20,7 @@ export function getMinimalEpidemicProfile(dbEpidemic: any) {
     questionnaire.questions = getMinimalQuestion(dbQuestionnaire.questions);
     return questionnaire;
   }
-  
+
   function getMinimalQuestion(dbQuestions: any[]) {
     const questions = [];
     dbQuestions.forEach(dbQuestion => {
@@ -32,7 +33,7 @@ export function getMinimalEpidemicProfile(dbEpidemic: any) {
     })
     return questions;
   }
-  
+
   function getMinimalQuestionOptions(dbQuestionOptions: any[]) {
     const options = [];
     dbQuestionOptions.forEach(dbQuestionOption => {
