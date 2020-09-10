@@ -69,6 +69,8 @@ export class LoginFormComponent implements OnInit {
                         this.userService.setDbUser(dbUser);
                         this.loginInProgress = false;
                         this.router.navigate(['/epidemic']);
+                    }, (error) => {
+                        console.log(error)
                     })
                 }
             }, () => {

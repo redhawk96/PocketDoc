@@ -5,6 +5,12 @@ import { LoginUser } from '~/lib/base/models/loginUser';
 import { RouterExtensions } from '@nativescript/angular';
 import { Progress } from '@nativescript/core/ui/progress';
 import { Page } from '@nativescript/core/ui/page';
+import { DeptEpidemicService } from '~/lib/base/services/gov.service';
+import { extractEpidemicProfile } from '~/lib/base/utils/deptEpidemicUtils';
+import { PocketDocEpidemicService } from '~/lib/base/services/pocketdoc.service';
+import { EpidemicService } from '~/lib/base/services/epidemic.service';
+// tslint:disable: no-empty
+// tslint:disable: align
 
 @Component({
     selector: 'app-loading-page',
@@ -14,10 +20,18 @@ import { Page } from '@nativescript/core/ui/page';
 export class LoadingPageComponent implements OnInit {
 
     isQuestionnaireLoaded: boolean = false;
-    logo : string;
+    logo: string;
 
-    constructor(private authService: AuthService, private userService: UserService, private router: RouterExtensions, private page: Page) {
+    constructor(private authService: AuthService, private userService: UserService, private router: RouterExtensions, private page: Page, private deptEpidemicService: DeptEpidemicService,
+        private pocketDocEpidemicService: PocketDocEpidemicService, private epidemicService: EpidemicService) {
         this.page.actionBarHidden = true;
+        this.deptEpidemicService.fetchEpidemicProfile().subscribe((eProfile: any) => {
+            this.epidemicService.setDeptEpidemicProfile(extractEpidemicProfile(eProfile.data));
+        });
+        // this.pocketDocEpidemicService.getEpidemicProfile().subscribe((eProfile: any) => {
+        //     this.epidemicService.setPocketDocEpidemicProfile(eProfile);
+        // })
+        console.log(this.epidemicService.getDeptEpidemicProfile())
     }
 
     ngOnInit(): void {

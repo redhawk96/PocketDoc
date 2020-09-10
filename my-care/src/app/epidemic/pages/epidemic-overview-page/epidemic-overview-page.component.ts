@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { EpidemicService } from '~/lib/base/services/epidemic.service';
 import { EpidemicProfile } from '~/lib/base/models/EpidemicProfile';
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { Application } from '@nativescript/core';
-
+// tslint:disable: no-empty
 @Component({
     selector: 'app-epidemic-overview-page',
     templateUrl: './epidemic-overview-page.component.html',
@@ -16,9 +15,7 @@ export class EpidemicOverviewPageComponent implements OnInit {
     questionOption: any = {};
 
     constructor(private epidemicService: EpidemicService) {
-        this.epidemicService.getEpidemicProfile().subscribe((eProfile: EpidemicProfile) => {
-            this.epidemicProfile = eProfile;
-        })
+        this.epidemicProfile = this.epidemicService.getPocketDocEpidemicProfile();
     }
 
     ngOnInit(): void {

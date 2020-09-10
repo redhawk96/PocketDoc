@@ -29,8 +29,4 @@ export class AuthService {
     getDbUser(user: LoginUser) {
         return this.http.post('https://us-central1-pocketdoc-a13a2.cloudfunctions.net/dbGetMinimalUserInfo', user);
     }
-
-    // getItem(id: number): Item {
-    //     return this.items.filter((item) => item.id === id)[0];
-    // }
 }
