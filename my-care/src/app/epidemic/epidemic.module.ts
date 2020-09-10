@@ -14,11 +14,8 @@ import { QuestionnaireFormComponent } from './components/questionnaire-form/ques
 import { FormItemComponent } from './components/form-item/form-item.component';
 import { QuestionnaireResultsModalComponent } from './components/questionnaire-results-modal/questionnaire-results-modal.component';
 import { EpidemicRoutingModule } from './epidemic-routing.module';
-import { EpidemicService } from '../../lib/base/services/epidemic.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NativeScriptUIDataFormModule } from 'nativescript-ui-dataform/angular';
-import { HttpClientModule } from '@angular/common/http';
-import { UserService } from '~/lib/base/services/user.service';
 
 @NgModule({
     declarations: [
@@ -47,9 +44,6 @@ import { UserService } from '~/lib/base/services/user.service';
     ],
     schemas: [
         NO_ERRORS_SCHEMA
-    ],
-    providers : [
-        EpidemicService
     ]
 })
 export class EpidemicModule { }

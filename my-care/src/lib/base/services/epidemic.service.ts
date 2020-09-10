@@ -1,24 +1,27 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Submission } from "../models/Submission";
+import { DepartmentEpidemicProfile } from "../models/DepartmentEpidemicProfile";
+import { EpidemicProfile } from "../models/EpidemicProfile";
 
-@Injectable({
-    providedIn: "root"
-})
+@Injectable()
 
 export class EpidemicService {
-    constructor(private http: HttpClient) {
+
+    private deptEpidemicProfile: DepartmentEpidemicProfile;
+    private pocketDocEpidemicProfile: EpidemicProfile;
+
+    setDeptEpidemicProfile(profile: DepartmentEpidemicProfile) {
+        this.deptEpidemicProfile = profile;
     }
 
-    getEpidemicProfile() {
-        return this.http.get('https://us-central1-pocketdoc-a13a2.cloudfunctions.net/dbGetEpidemicInfo');
+    getDeptEpidemicProfile(): DepartmentEpidemicProfile {
+        return this.deptEpidemicProfile;
     }
 
-    submitEpidemicQuestionnaire(submission: Submission) {
-        return this.http.post("https://us-central1-pocketdoc-a13a2.cloudfunctions.net/P2I", submission)
+    setPocketDocEpidemicProfile(profile: EpidemicProfile) {
+        this.pocketDocEpidemicProfile = profile;
     }
 
-    // getItem(id: number): Item {
-    //     return this.items.filter((item) => item.id === id)[0];
-    // }
+    getPocketDocEpidemicProfile(): EpidemicProfile {
+        return this.pocketDocEpidemicProfile;
+    }
 }

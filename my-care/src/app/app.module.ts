@@ -4,9 +4,8 @@ import { NativeScriptUISideDrawerModule } from "nativescript-ui-sidedrawer/angul
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { EpidemicService } from "~/lib/base/services/epidemic.service";
-import { UserService } from "~/lib/base/services/user.service";
 import { AuthModule } from "./auth/auth.module";
+import { CoreModule } from "./core/core.module";
 
 @NgModule({
     bootstrap: [
@@ -16,6 +15,7 @@ import { AuthModule } from "./auth/auth.module";
         AppRoutingModule,
         NativeScriptModule,
         NativeScriptUISideDrawerModule,
+        CoreModule.forRoot(),
         AuthModule.forRoot()
     ],
     declarations: [
