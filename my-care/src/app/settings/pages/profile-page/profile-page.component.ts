@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { Application } from '@nativescript/core';
-import { HttpClient } from '@angular/common/http';
+// tslint:disable: no-empty
 
 @Component({
     selector: 'app-profile-page',

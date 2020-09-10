@@ -10,6 +10,7 @@ import { capitalizationType, inputType, PromptResult } from '@nativescript/core/
 import { Button } from '@nativescript/core';
 import { UserService } from '~/lib/base/services/user.service';
 import { RouterExtensions } from '@nativescript/angular';
+import { PocketDocEpidemicService } from '~/lib/base/services/pocketdoc.service';
 
 // tslint:disable: newline-before-return
 @Component({
@@ -28,11 +29,9 @@ export class QuestionnaireFormComponent implements OnInit {
     isSubmissionInProgress: boolean = false;
     private locatedCity: string = null;
 
-    constructor(private epidemicService: EpidemicService, private userService: UserService, private router: RouterExtensions) {
-        this.epidemicService.getEpidemicProfile().subscribe((eProfile: EpidemicProfile) => {
-            this.epidemicProfile = eProfile;
-            this._questions = eProfile.questionnaire.questions;
-        });
+    constructor(private epidemicService: EpidemicService, private pocketDocEpidemicService: PocketDocEpidemicService, private userService: UserService, private router: RouterExtensions) {
+        this.epidemicProfile = this.epidemicService.getPocketDocEpidemicProfile();
+        console.log(this.userService.getDbUser())
     }
 
     get questions() {
@@ -143,7 +142,7 @@ export class QuestionnaireFormComponent implements OnInit {
             }).then((result: boolean) => {
                 if (result === true) {
                     if (this._currentGeoLocation != null) {
-                        this.epidemicService.submitEpidemicQuestionnaire(this.getConstructedFormData()).subscribe((res: any) => {
+                        this.pocketDocEpidemicService.submitEpidemicQuestionnaire(this.getConstructedFormData()).subscribe((res: any) => {
                             dialogs.alert({
                                 title: "Results",
                                 message: res.result,

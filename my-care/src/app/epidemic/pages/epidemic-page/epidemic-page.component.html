@@ -1,22 +1,23 @@
 <StackLayout orientation="vertical">
-    <Image class="m-30" [src]="epidemicProfile.photoURL">
-    </Image>
-    <Label style="padding-left:50px" textWrap="true" class="h3" [text]="epidemicProfile?.description">
-    </Label>
-    <ScrollView orientation="vertical" style="height: 950px">
+    <ScrollView orientation="vertical" style="height: 1200px">
         <StackLayout orientation="vertical">
-            <Label text="Precautions" class="h3" style="padding-left:50px; padding-top:50px"></Label>
+            <Image class="m-15 image-thumbnail" [src]="epidemicProfile?.photoURL"></Image>
+            <Label textWrap="true" class="h3 m-15" [text]="epidemicProfile?.description"></Label>
+
+            <Label text="Precautions" class="h3 m-15" style="padding-top:50px"></Label>
             <ScrollView orientation="horizontal" style="height: 300px">
-                <GridLayout class="m-15" [columns]="precautionColumns">
+                <GridLayout [columns]="precautionColumns">
                     <Image [col]="p" class="h3 m-15 image-thumbnail" *ngFor="let precaution of precautions; let p = index" [src]="precaution?.photoURL"></Image>
                 </GridLayout>
             </ScrollView>
-            <Label text="Symptoms" class="h3" style="padding-left:50px; padding-top:50px"></Label>
+
+            <Label text="Symptoms" class="h3 m-15" style="padding-top:50px"></Label>
             <ScrollView orientation="horizontal" style="height: 300px">
-                <GridLayout class="m-15" [columns]="symptomColumns">
+                <GridLayout [columns]="symptomColumns">
                     <Image [col]="s" class="h3 m-15 image-thumbnail" *ngFor="let symptom of symptoms; let s = index" [src]="symptom?.photoURL"></Image>
                 </GridLayout>
             </ScrollView>
+
         </StackLayout>
     </ScrollView>
 </StackLayout>

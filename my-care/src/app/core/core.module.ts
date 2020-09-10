@@ -2,10 +2,13 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { NativeScriptCommonModule, NativeScriptRouterModule, NativeScriptHttpClientModule } from '@nativescript/angular';
 import { SplashScreenPageComponent } from './pages/splash-screen-page/splash-screen-page.component';
 import { LoadingPageComponent } from './pages/loading-page/loading-page.component';
-import { AuthService } from '~/lib/base/services/auth.service';
-import { UserService } from '~/lib/base/services/user.service';
 import { CoreRoutingModule } from './core-routing.module';
 import { AuthRoutingModule } from '../auth/auth-routing.module';
+import { ModuleWithProviders } from '@angular/compiler/src/core';
+import { DeptEpidemicService } from '~/lib/base/services/gov.service';
+import { PocketDocEpidemicService } from '~/lib/base/services/pocketdoc.service';
+import { EpidemicService } from '~/lib/base/services/epidemic.service';
+import { UserService } from '~/lib/base/services/user.service';
 
 @NgModule({
     declarations: [
@@ -23,8 +26,17 @@ import { AuthRoutingModule } from '../auth/auth-routing.module';
         NO_ERRORS_SCHEMA
     ],
     providers: [
-        AuthService,
-        UserService
+        PocketDocEpidemicService,
+        DeptEpidemicService
     ]
 })
-export class CoreModule { }
+export class CoreModule {
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: CoreModule,
+            providers: [
+                EpidemicService
+            ]
+        };
+    }
+}
