@@ -4,7 +4,6 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { RegisterAccountFormComponent } from './components/register-account-form/register-account-form.component';
-import { RestPasswordFormComponent } from './components/rest-password-form/rest-password-form.component';
 import { RestPasswordPageComponent } from './pages/rest-password-page/rest-password-page.component';
 import { AuthRoutingModule } from './auth-routing.module';
 import { NativeScriptUIDataFormModule } from 'nativescript-ui-dataform/angular';
@@ -21,7 +20,6 @@ import { ModuleWithProviders } from '@angular/compiler/src/core';
         LoginFormComponent,
         RegisterProfileFormComponent,
         RegisterAccountFormComponent,
-        RestPasswordFormComponent,
         RestPasswordPageComponent
     ],
     imports: [
@@ -43,7 +41,9 @@ export class AuthModule {
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: AuthModule,
-            providers: [UserService]
+            providers: [
+                UserService
+            ]
         };
     }
 }

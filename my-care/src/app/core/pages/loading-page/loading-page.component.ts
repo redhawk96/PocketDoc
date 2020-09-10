@@ -21,17 +21,9 @@ export class LoadingPageComponent implements OnInit {
 
     isQuestionnaireLoaded: boolean = false;
     logo: string;
-
-    constructor(private authService: AuthService, private userService: UserService, private router: RouterExtensions, private page: Page, private deptEpidemicService: DeptEpidemicService,
-        private pocketDocEpidemicService: PocketDocEpidemicService, private epidemicService: EpidemicService) {
+    epidemicProfile: any = null;
+    constructor(private authService: AuthService, private userService: UserService, private router: RouterExtensions, private page: Page) {
         this.page.actionBarHidden = true;
-        this.deptEpidemicService.fetchEpidemicProfile().subscribe((eProfile: any) => {
-            this.epidemicService.setDeptEpidemicProfile(extractEpidemicProfile(eProfile.data));
-        });
-        // this.pocketDocEpidemicService.getEpidemicProfile().subscribe((eProfile: any) => {
-        //     this.epidemicService.setPocketDocEpidemicProfile(eProfile);
-        // })
-        console.log(this.epidemicService.getDeptEpidemicProfile())
     }
 
     ngOnInit(): void {

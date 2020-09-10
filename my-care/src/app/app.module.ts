@@ -15,7 +15,6 @@ import { CoreModule } from "./core/core.module";
         AppRoutingModule,
         NativeScriptModule,
         NativeScriptUISideDrawerModule,
-        CoreModule.forRoot(),
         AuthModule.forRoot()
     ],
     declarations: [

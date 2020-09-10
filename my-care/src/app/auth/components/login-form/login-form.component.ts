@@ -7,6 +7,10 @@ import * as dialogs from "@nativescript/core/ui/dialogs";
 import { UserService } from '~/lib/base/services/user.service';
 import { MinimalUser } from '~/lib/base/models/MinimalUser';
 import { validateEmail } from '~/lib/base/utils/loginUtils';
+import { DeptEpidemicService } from '~/lib/base/services/gov.service';
+import { PocketDocEpidemicService } from '~/lib/base/services/pocketdoc.service';
+import { EpidemicService } from '~/lib/base/services/epidemic.service';
+import { extractEpidemicProfile } from '~/lib/base/utils/deptEpidemicUtils';
 // tslint:disable: no-shadowed-variable
 // tslint:disable: no-string-literal
 // tslint:disable: newline-before-return
@@ -21,7 +25,8 @@ export class LoginFormComponent implements OnInit {
     private _loginUser: LoginUser;
     loginInProgress: boolean = false;
 
-    constructor(private authService: AuthService, private router: RouterExtensions, private userService: UserService) { }
+    constructor(private authService: AuthService, private router: RouterExtensions, private userService: UserService) {
+    }
 
     ngOnInit(): void {
         this._loginUser = new LoginUser("", "");
@@ -57,7 +62,7 @@ export class LoginFormComponent implements OnInit {
         this.loginForm.dataForm.commitAll();
         const email = this.loginForm.dataForm.source['email'];
         const password = this.loginForm.dataForm.source['password'];
-        const user : LoginUser = new LoginUser(email, password);
+        const user: LoginUser = new LoginUser(email, password);
 
         if (this.validateCredentials(user)) {
             this.loginInProgress = true;

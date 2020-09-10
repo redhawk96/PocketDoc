@@ -2,7 +2,9 @@ import { Injectable } from "@angular/core";
 import { DepartmentEpidemicProfile } from "../models/DepartmentEpidemicProfile";
 import { EpidemicProfile } from "../models/EpidemicProfile";
 
-@Injectable()
+@Injectable({
+    providedIn: "root"
+})
 
 export class EpidemicService {
 

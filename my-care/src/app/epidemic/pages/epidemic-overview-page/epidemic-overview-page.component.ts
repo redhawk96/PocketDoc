@@ -11,11 +11,7 @@ import { Application } from '@nativescript/core';
 })
 export class EpidemicOverviewPageComponent implements OnInit {
 
-    epidemicProfile: EpidemicProfile;
-    questionOption: any = {};
-
-    constructor(private epidemicService: EpidemicService) {
-        this.epidemicProfile = this.epidemicService.getPocketDocEpidemicProfile();
+    constructor() {
     }
 
     ngOnInit(): void {

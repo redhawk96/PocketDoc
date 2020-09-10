@@ -29,9 +29,11 @@ export class QuestionnaireFormComponent implements OnInit {
     isSubmissionInProgress: boolean = false;
     private locatedCity: string = null;
 
-    constructor(private epidemicService: EpidemicService, private pocketDocEpidemicService: PocketDocEpidemicService, private userService: UserService, private router: RouterExtensions) {
-        this.epidemicProfile = this.epidemicService.getPocketDocEpidemicProfile();
-        console.log(this.userService.getDbUser())
+    constructor(private pocketDocEpidemicService: PocketDocEpidemicService, private userService: UserService, private router: RouterExtensions) {
+        this.pocketDocEpidemicService.getEpidemicProfile().subscribe((eProfile: any) => {
+            this.epidemicProfile = eProfile;
+            this._questions = eProfile.questionnaire.questions;
+        });
     }
 
     get questions() {
