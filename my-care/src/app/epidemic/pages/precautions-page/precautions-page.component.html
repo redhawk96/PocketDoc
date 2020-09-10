@@ -1,1 +1,16 @@
-<Button text="precautions-page works!" class="btn btn-primary"></Button>
+<ActionBar class="bg-primary">
+    <Label text="EPIDEMIC PRECAUTIONS"></Label>
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="goBack()"></NavigationButton>
+</ActionBar>
+
+<ListView [items]="precautions">
+    <ng-template let-item="item" let-i="index">
+        <StackLayout orientation="horizontal">
+            <Image [src]="item?.photoURL" style="width: 30%;" class="image-thumbnail"></Image>
+            <StackLayout orientation="vertical">
+                <label textWrap="true" [text]="item?.method" class="h3"></label>
+                <Label textWrap="true" class="h4" [text]="item?.description"></Label>
+            </StackLayout>
+        </StackLayout>
+    </ng-template>
+</ListView>

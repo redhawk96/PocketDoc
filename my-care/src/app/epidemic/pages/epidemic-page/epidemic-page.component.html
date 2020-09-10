@@ -7,14 +7,14 @@
             <Label text="Precautions" class="h3 m-15" style="padding-top:50px"></Label>
             <ScrollView orientation="horizontal" style="height: 300px">
                 <GridLayout [columns]="precautionColumns">
-                    <Image [col]="p" class="h3 m-15 image-thumbnail" *ngFor="let precaution of precautions; let p = index" [src]="precaution?.photoURL"></Image>
+                    <Image [col]="p" class="h3 m-15 image-thumbnail" *ngFor="let precaution of precautions; let p = index" [src]="precaution?.photoURL" [nsRouterLink]="['/epidemic/precautions']" pageTransition="slide"></Image>
                 </GridLayout>
             </ScrollView>
 
             <Label text="Symptoms" class="h3 m-15" style="padding-top:50px"></Label>
             <ScrollView orientation="horizontal" style="height: 300px">
                 <GridLayout [columns]="symptomColumns">
-                    <Image [col]="s" class="h3 m-15 image-thumbnail" *ngFor="let symptom of symptoms; let s = index" [src]="symptom?.photoURL"></Image>
+                    <Image [col]="s" class="h3 m-15 image-thumbnail" *ngFor="let symptom of symptoms; let s = index" [src]="symptom?.photoURL" [nsRouterLink]="['/epidemic/symptoms']" pageTransition="slide"></Image>
                 </GridLayout>
             </ScrollView>
 
