@@ -73,7 +73,12 @@ export class LoginFormComponent implements OnInit {
                         const dbUser: MinimalUser = res.result;
                         this.userService.setDbUser(dbUser);
                         this.loginInProgress = false;
-                        this.router.navigate(['/epidemic']);
+                        this.router.navigate(['/epidemic'], {
+                            transition: {
+                                name: 'slide'
+                            },
+                            clearHistory: true
+                        });
                     }, (error) => {
                         console.log(error)
                     })

@@ -90,6 +90,8 @@ export class QuestionnaireFormComponent implements OnInit {
         // Getting location
         if (this.locatedCity == null) {
             this.locatedCity = this.userService.getDbUser().city.toUpperCase()
+        } else {
+            this.locatedCity.toUpperCase();
         }
 
         // Constructing the submission to JSON object
@@ -150,9 +152,9 @@ export class QuestionnaireFormComponent implements OnInit {
                                 message: res.result,
                                 okButtonText: "OK"
                             });
+                            this.isSubmissionInProgress = false;
                         });
                     }
-                    this.isSubmissionInProgress = false;
                 } else {
                     dialogs.alert({
                         title: 'Required',

@@ -18,11 +18,6 @@ https://docs.nativescript.org/angular/ui/professional-ui-components/ng-SideDrawe
                     <Label col="1" text="Home" class="p-r-10"></Label>
                 </GridLayout>
 
-                <GridLayout columns="auto, *" class="nt-drawer__list-item" [class.-selected]="isComponentSelected('/alert')" (tap)="onNavItemTap('/alert')">
-                    <Label col="0" text="&#xf0f3;" class="nt-icon fas"></Label>
-                    <Label col="1" text="Alerts" class="p-r-10"></Label>
-                </GridLayout>
-
                 <GridLayout columns="auto, *" class="nt-drawer__list-item" [class.-selected]="isComponentSelected('/statistics')" (tap)="onNavItemTap('/statistics')">
                     <Label col="0" text="&#xf080;" class="nt-icon fas"></Label>
                     <Label col="1" text="Live" class="p-r-10"></Label>
@@ -30,11 +25,7 @@ https://docs.nativescript.org/angular/ui/professional-ui-components/ng-SideDrawe
 
                 <StackLayout class="hr"></StackLayout>
 
-                <GridLayout columns="auto, *" class="nt-drawer__list-item" [class.-selected]="isComponentSelected('/settings')" (tap)="onNavItemTap('/settings')">
-                    <Label col="0" text="&#xf013;" class="nt-icon fas"></Label>
-                    <Label col="1" text="Settings" class="p-r-10"></Label>
-                </GridLayout>
-                <GridLayout columns="auto, *" class="nt-drawer__list-item" [class.-selected]="isComponentSelected('/settings')" (tap)="signOut()">
+                <GridLayout columns="auto, *" class="nt-drawer__list-item" (tap)="signOut()">
                     <Label col="0" text="&#xf007;" class="nt-icon fas"></Label>
                     <Label col="1" text="Exit" class="p-r-10"></Label>
                 </GridLayout>

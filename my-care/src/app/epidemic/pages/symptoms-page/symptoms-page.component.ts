@@ -23,6 +23,6 @@ export class SymptomsPageComponent implements OnInit {
     }
 
     goBack() {
-        this.router.navigate(['/epidemic'])
+        this.router.back();
     }
 }

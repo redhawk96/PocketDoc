@@ -49,6 +49,13 @@ export class AppComponent implements OnInit {
 
     signOut() {
         this.userService.setDbUser(null);
-        this.onNavItemTap('/loading');
+        this.routerExtensions.navigate(['/loading'], {
+            transition: {
+                name: 'fade'
+            },
+            clearHistory: true
+        });
+        const sideDrawer = <RadSideDrawer>Application.getRootView();
+        sideDrawer.closeDrawer();
     }
 }

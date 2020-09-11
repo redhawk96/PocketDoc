@@ -21,6 +21,7 @@ export class RegisterProfileFormComponent implements OnInit {
 
     private _user: MinimalUser;
     cities: string;
+    isSetUpInProgress : boolean = false;
     isProfileFormReady: boolean = false;
 
     constructor(private cityService: CityService, private authService: AuthService, private userService: UserService, private router: RouterExtensions) {
@@ -73,11 +74,12 @@ export class RegisterProfileFormComponent implements OnInit {
     }
 
     setUpProfile() {
+        this.isSetUpInProgress = true;
         this.profileForm.dataForm.commitAll();
         const firstName = this.profileForm.dataForm.source['firstName'];
         const lastName = this.profileForm.dataForm.source['lastName'];
         const dob = this.profileForm.dataForm.source['dob'];
-        const nic = this.profileForm.dataForm.source['nic'];
+        const nic = this.profileForm.dataForm.source['nic'].toUpperCase();
         const city = this.profileForm.dataForm.source['city'];
         const phoneNumber = this.profileForm.dataForm.source['phoneNumber'];
 
@@ -92,9 +94,17 @@ export class RegisterProfileFormComponent implements OnInit {
 
                 setTimeout(() => {
                     if (res.status === true) {
-                        this.router.navigate(['/epidemic']);
+                        this.router.navigate(['/epidemic'], {
+                            transition: {
+                                name: 'slide'
+                            },
+                            clearHistory: true
+                        });
                     }
                 }, 1000)
+            }, () => {
+                this.displayPopUpDialog('Creation Failed', 'Unable to create medical profile, make sure that your device is connected to the internet');
+                this.isSetUpInProgress = false;
             })
         }
     }
