@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
     userName: string;
     email: string;
 
-    constructor(private router: Router, private routerExtensions: RouterExtensions) {
+    constructor(private router: Router, private routerExtensions: RouterExtensions, private userService: UserService) {
     }
 
     ngOnInit(): void {
@@ -43,6 +43,18 @@ export class AppComponent implements OnInit {
             }
         });
 
+        const sideDrawer = <RadSideDrawer>Application.getRootView();
+        sideDrawer.closeDrawer();
+    }
+
+    signOut() {
+        this.userService.setDbUser(null);
+        this.routerExtensions.navigate(['/loading'], {
+            transition: {
+                name: 'fade'
+            },
+            clearHistory: true
+        });
         const sideDrawer = <RadSideDrawer>Application.getRootView();
         sideDrawer.closeDrawer();
     }

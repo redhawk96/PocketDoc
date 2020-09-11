@@ -1,6 +1,5 @@
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { NativeScriptCommonModule, NativeScriptRouterModule, NativeScriptHttpClientModule } from '@nativescript/angular';
-import { SplashScreenPageComponent } from './pages/splash-screen-page/splash-screen-page.component';
 import { LoadingPageComponent } from './pages/loading-page/loading-page.component';
 import { CoreRoutingModule } from './core-routing.module';
 import { AuthRoutingModule } from '../auth/auth-routing.module';
@@ -12,7 +11,6 @@ import { UserService } from '~/lib/base/services/user.service';
 
 @NgModule({
     declarations: [
-        SplashScreenPageComponent,
         LoadingPageComponent
     ],
     imports: [

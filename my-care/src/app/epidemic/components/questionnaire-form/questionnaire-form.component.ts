@@ -29,9 +29,11 @@ export class QuestionnaireFormComponent implements OnInit {
     isSubmissionInProgress: boolean = false;
     private locatedCity: string = null;
 
-    constructor(private epidemicService: EpidemicService, private pocketDocEpidemicService: PocketDocEpidemicService, private userService: UserService, private router: RouterExtensions) {
-        this.epidemicProfile = this.epidemicService.getPocketDocEpidemicProfile();
-        console.log(this.userService.getDbUser())
+    constructor(private pocketDocEpidemicService: PocketDocEpidemicService, private userService: UserService, private router: RouterExtensions) {
+        this.pocketDocEpidemicService.getEpidemicProfile().subscribe((eProfile: any) => {
+            this.epidemicProfile = eProfile;
+            this._questions = eProfile.questionnaire.questions;
+        });
     }
 
     get questions() {
@@ -88,6 +90,8 @@ export class QuestionnaireFormComponent implements OnInit {
         // Getting location
         if (this.locatedCity == null) {
             this.locatedCity = this.userService.getDbUser().city.toUpperCase()
+        } else {
+            this.locatedCity.toUpperCase();
         }
 
         // Constructing the submission to JSON object
@@ -148,9 +152,9 @@ export class QuestionnaireFormComponent implements OnInit {
                                 message: res.result,
                                 okButtonText: "OK"
                             });
+                            this.isSubmissionInProgress = false;
                         });
                     }
-                    this.isSubmissionInProgress = false;
                 } else {
                     dialogs.alert({
                         title: 'Required',

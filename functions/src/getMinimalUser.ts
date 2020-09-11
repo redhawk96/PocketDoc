@@ -3,10 +3,10 @@ import * as admin from 'firebase-admin';
 import { getMinimalUserInfo } from './utils/objectUtils';
 
 export const dbGetMinimalUserInfo = functions.https.onRequest((request, response) => {
-  if (request.method === 'GET') {
-    const email = request.params.email;
+  if (request.method === 'POST' && request.body.email) {
+    const reqData = request.body;
     const db = admin.firestore();
-    const usersColRef = db.collection('users').where('email', "==", email)
+    const usersColRef = db.collection('users').where('email', "==", reqData.email)
     usersColRef.get().then((snap) => {
       snap.forEach((user: any) => {
         if (!user.exists) {

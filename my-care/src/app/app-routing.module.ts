@@ -23,14 +23,6 @@ const routes: Routes = [
     {
         path: "statistics",
         loadChildren: () => import("~/app/statistics/statistics.module").then((m) => m.StatisticsModule)
-    },
-    {
-        path: "alert",
-        loadChildren: () => import("~/app/alert/alert.module").then((m) => m.AlertModule)
-    },
-    {
-        path: "settings",
-        loadChildren: () => import("~/app/settings/settings.module").then((m) => m.SettingsModule)
     }
 ];
 

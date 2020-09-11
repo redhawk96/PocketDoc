@@ -78,7 +78,12 @@ export class RegisterAccountFormComponent implements OnInit {
                     this.userService.setSignUpUser(new LoginUser(res.email, null, res.localId))
                     this.displayPopUpDialog('Account Creation', 'Congratulations your account has been created. To complete registration please setup up you medical profile');
                     setTimeout(() => {
-                        this.router.navigate(['/auth/registerProfile']);
+                        this.router.navigate(['/auth/registerProfile'], {
+                            transition: {
+                                name: 'slide'
+                            },
+                            clearHistory: true
+                        });
                     }, 800)
                 }
             }, () => {

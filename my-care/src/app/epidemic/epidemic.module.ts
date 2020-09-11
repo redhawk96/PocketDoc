@@ -5,17 +5,12 @@ import { SymptomsPageComponent } from './pages/symptoms-page/symptoms-page.compo
 import { PrecautionsPageComponent } from './pages/precautions-page/precautions-page.component';
 import { QuestionnairePageComponent } from './pages/questionnaire-page/questionnaire-page.component';
 import { EpidemicPageComponent } from './pages/epidemic-page/epidemic-page.component';
-import { EpidemicInfoCardComponent } from './components/epidemic-info-card/epidemic-info-card.component';
-import { SymptomListComponent } from './components/symptom-list/symptom-list.component';
-import { SymptomCardComponent } from './components/symptom-card/symptom-card.component';
-import { PrecautionListComponent } from './components/precaution-list/precaution-list.component';
-import { PrecautionCardComponent } from './components/precaution-card/precaution-card.component';
 import { QuestionnaireFormComponent } from './components/questionnaire-form/questionnaire-form.component';
-import { FormItemComponent } from './components/form-item/form-item.component';
-import { QuestionnaireResultsModalComponent } from './components/questionnaire-results-modal/questionnaire-results-modal.component';
 import { EpidemicRoutingModule } from './epidemic-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NativeScriptUIDataFormModule } from 'nativescript-ui-dataform/angular';
+import { PocketDocEpidemicService } from '~/lib/base/services/pocketdoc.service';
+import { DeptEpidemicService } from '~/lib/base/services/gov.service';
 
 @NgModule({
     declarations: [
@@ -24,14 +19,7 @@ import { NativeScriptUIDataFormModule } from 'nativescript-ui-dataform/angular';
         PrecautionsPageComponent,
         QuestionnairePageComponent,
         EpidemicPageComponent,
-        EpidemicInfoCardComponent,
-        SymptomListComponent,
-        SymptomCardComponent,
-        PrecautionListComponent,
-        PrecautionCardComponent,
-        QuestionnaireFormComponent,
-        FormItemComponent,
-        QuestionnaireResultsModalComponent
+        QuestionnaireFormComponent
     ],
     imports: [
         NativeScriptCommonModule,
@@ -44,6 +32,13 @@ import { NativeScriptUIDataFormModule } from 'nativescript-ui-dataform/angular';
     ],
     schemas: [
         NO_ERRORS_SCHEMA
+<<<<<<< HEAD
+=======
+    ],
+    providers: [
+        PocketDocEpidemicService,
+        DeptEpidemicService
+>>>>>>> 27ab641bbedabe1c7de02135f739d0729826cfa6
     ]
 })
 export class EpidemicModule { }
