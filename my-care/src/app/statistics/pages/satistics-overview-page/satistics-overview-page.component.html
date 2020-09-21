@@ -1,0 +1,48 @@
+<ActionBar class="bg-primary">
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem icon="res://menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem>
+    <Label text="EPIDEMIC STATISTICS"></Label>
+</ActionBar>
+
+<StackLayout>
+    <ScrollView orientation="horizontal" style="height: 250px; vertical-align: top;">
+        <GridLayout columns="280 280 auto auto 280">
+            <StackLayout col="0" backgroundColor="#c62828" orientation="vertical" class="m-15 image-thumbnail" style="padding-left: 20px; padding-right: 20px;">
+                <label textWrap="true" text="RECOVERED CASES" class="h2 m-15 text-white" style="text-align: center;"></label>
+                <label textWrap="true" [text]="epidemicProfile?.recoveredCases" class="h2 m-15 text-white" style="text-align: center;"></label>
+            </StackLayout>
+            <StackLayout col="1" backgroundColor="#c62828" orientation="vertical" class="m-15 image-thumbnail" style="padding-left: 20px; padding-right: 20px;">
+                <label textWrap="true" text="NEW CASES" class="h2 m-15 text-white" style="text-align: center;"></label>
+                <label textWrap="true" [text]="epidemicProfile?.newCases" class="h2 m-15 text-white" style="text-align: center;"></label>
+            </StackLayout>
+            <StackLayout col="2" backgroundColor="#c62828" orientation="vertical" class="m-15 image-thumbnail" style="padding-left: 20px; padding-right: 20px;">
+                <label textWrap="true" text="TERMINATED CASES" class="h2 m-15 text-white" style="text-align: center;"></label>
+                <label textWrap="true" [text]="epidemicProfile?.terminatedCases" class="h2 m-15 text-white" style="text-align: center;"></label>
+            </StackLayout>
+            <StackLayout col="3" backgroundColor="#c62828" orientation="vertical" class="m-15 image-thumbnail" style="padding-left: 20px; padding-right: 20px;">
+                <label textWrap="true" text="HOSPITALIZED CASES" class="h2 m-15 text-white" style="text-align: center;"></label>
+                <label textWrap="true" [text]="epidemicProfile?.hospitalizedCases" class="h2 m-15 text-white" style="text-align: center;"></label>
+            </StackLayout>
+            <StackLayout col="4" backgroundColor="#c62828" orientation="vertical" class="m-15 image-thumbnail" style="padding-left: 20px; padding-right: 20px;">
+                <label textWrap="true" text="TOTAL CASES" class="h2 m-15 text-white" style="text-align: center;"></label>
+                <label textWrap="true" [text]="epidemicProfile?.totalCases" class="h2 m-15 text-white" style="text-align: center;"></label>
+            </StackLayout>
+        </GridLayout>
+    </ScrollView>
+
+    <label textWrap="true" text="Operational Medical Centers" class="h3 m-15" style="margin-top: 55px; padding-bottom: 40px;"></label>
+    <ListView [items]="epidemicProfile?.medicalCenters" height="505">
+        <ng-template let-item="item" let-i="index">
+            <StackLayout orientation="horizontal">
+                <Image src="res://hospital" class="image-thumbnail m-15" width="90"  borderRadius="25"></Image>
+                <StackLayout orientation="vertical">
+                    <label textWrap="true" [text]="item?.centerName" class="h5"></label>
+                    <Label textWrap="true" class="h5" text="Supervised Cases     : {{item?.supervisedCases}}"></Label>
+                    <Label textWrap="true" class="h5" text="Hospitalized Cases  : {{item?.hospitalizedCases}}"></Label>
+                </StackLayout>
+            </StackLayout>
+        </ng-template>
+    </ListView>
+</StackLayout>

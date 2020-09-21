@@ -1,9 +1,13 @@
-// import * as functions from 'firebase-functions';
+// The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+const functions = require('firebase-functions');
+// The Firebase Admin SDK to access the Firebase Realtime Database.
+const admin = require('firebase-admin');
+const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG);
+admin.initializeApp(firebaseConfig);
+
+export { P2I } from './P21';
+export { dbGetEpidemicInfo } from './getEpidemicInfo';
+export { dbCreateUser } from './createUser';
+export { dbGetMinimalUserInfo } from './getMinimalUser';
+export { getUserTurnUpRate } from './getTurnUpRate';
